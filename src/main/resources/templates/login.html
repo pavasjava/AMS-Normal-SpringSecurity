@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMS Login</title>
+    <style>
+        body {
+            background-color: #e0f7fa; /* Gentle light blue background color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .welcome-section img {
+            max-width: 100px; /* Reduced logo size */
+            height: auto;
+        }
+
+        .welcome-section h1 {
+            font-size: 2em; /* Slightly smaller font size */
+            margin: 20px 0;
+        }
+
+        .login-section {
+            width: 100%;
+        }
+
+        .login-section h2 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .login-section form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .login-section input[type="text"],
+        .login-section input[type="password"] {
+            font-size: 1em;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .remember input {
+            margin-right: 10px;
+        }
+
+        .remember label {
+            font-size: 1em;
+        }
+
+        .login-section button {
+            padding: 15px;
+            font-size: 1.2em;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .login-section button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="welcome-section">
+           <img src="/image/cmgi.png" alt="AMS Logo">
+            <h1>Welcome to AMS</h1>
+        </div>
+        <div class="login-section">
+            <h2>User Login</h2>
+            <form action="/login" method="post">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <div class="remember">
+                    <input type="checkbox" name="remember" id="remember">
+                    <label for="remember">Remember</label>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

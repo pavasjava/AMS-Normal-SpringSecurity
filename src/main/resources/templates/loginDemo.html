@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Attendance Monitoring System - Login</title>
+	<!-- Bootstrap CSS -->
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+	<style>
+		body {
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			font-family: "Roboto", sans-serif;
+			background-color: #D6D8D5;
+			overflow: hidden;
+		}
+
+		.table {
+			display: table;
+			width: 100%;
+			height: 100%;
+		}
+
+		.table-cell {
+			display: table-cell;
+			vertical-align: middle;
+			-moz-transition: all 0.5s;
+			-o-transition: all 0.5s;
+			-webkit-transition: all 0.5s;
+			transition: all 0.5s;
+		}
+
+		.container {
+			position: relative;
+			width: 800px;
+			/* Adjusted width for desktop size */
+			margin: 0 auto;
+			height: 450px;
+			/* Adjusted height for desktop size */
+			background-color: #1E797C;
+			top: 50%;
+			transform: translateY(-50%);
+			-moz-transition: all 0.5s;
+			-o-transition: all 0.5s;
+			-webkit-transition: all 0.5s;
+			transition: all 0.5s;
+			border-radius: 10px;
+		}
+
+		.container .box {
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+		}
+
+		.container .box:before,
+		.container .box:after {
+			content: " ";
+			position: absolute;
+			left: 200px;
+			/* Adjusted left for desktop size */
+			top: 50px;
+			background-color: #E8CBC5;
+			transform: rotateX(52deg) rotateY(15deg) rotateZ(-38deg);
+			width: 400px;
+			/* Adjusted width for desktop size */
+			height: 380px;
+			/* Adjusted height for desktop size */
+			-moz-transition: all 0.5s;
+			-o-transition: all 0.5s;
+			-webkit-transition: all 0.5s;
+			transition: all 0.5s;
+		}
+
+		.container .box:after {
+			background-color: #E8CBC5;
+			top: -10px;
+			left: 120px;
+			/* Adjusted left for desktop size */
+			width: 430px;
+			/* Adjusted width for desktop size */
+			height: 240px;
+			/* Adjusted height for desktop size */
+		}
+
+		.container .container-forms {
+			position: relative;
+		}
+
+		.container .btn {
+			cursor: pointer;
+			text-align: center;
+			margin: 0 auto;
+			width: 100px;
+			/* Adjusted width for desktop size */
+			color: #fff;
+			background-color: #ff73b3;
+			opacity: 1;
+			-moz-transition: all 0.5s;
+			-o-transition: all 0.5s;
+			-webkit-transition: all 0.5s;
+			transition: all 0.5s;
+		}
+
+		.container .btn:hover {
+			opacity: 0.7;
+		}
+
+		.container .btn,
+		.container input {
+			padding: 10px 15px;
+		}
+
+		.container input {
+			margin: 0 auto 15px;
+			display: block;
+			width: 300px;
+			/* Adjusted width for desktop size */
+			-moz-transition: all 0.3s;
+			-o-transition: all 0.3s;
+			-webkit-transition: all 0.3s;
+			transition: all 0.3s;
+		}
+
+		.container .container-forms .container-info {
+			text-align: left;
+			font-size: 0;
+		}
+
+		.container .container-forms .container-info .info-item {
+			text-align: center;
+			font-size: 50px;
+			width: 50%;
+			/* Adjusted width for desktop size */
+			height: 450px;
+			/* Adjusted height for desktop size */
+			display: inline-block;
+			vertical-align: top;
+			color: #fff;
+			opacity: 1;
+			-moz-transition: all 0.3s;
+			-o-transition: all 0.3s;
+			-webkit-transition: all 0.3s;
+			transition: all 0.3s;
+		}
+
+		.container .container-forms .container-info .info-item p {
+			font-size: 40px;
+			/* Increased font size */
+			margin: 20px;
+		}
+
+		.container .container-forms .container-info .info-item .btn {
+			background-color: transparent;
+			border: 1px solid #fff;
+		}
+
+		.container .container-forms .container-info .info-item .table-cell {
+			padding-right: 35px;
+		}
+
+		.container .container-forms .container-info .info-item:nth-child(2) .table-cell {
+			padding-left: 35px;
+			padding-right: 0;
+		}
+
+		.container .container-form {
+			overflow: hidden;
+			position: absolute;
+			left: 40px;
+			/* Adjusted left for desktop size */
+			top: -30px;
+			width: 400px;
+			/* Adjusted width for desktop size */
+			height: 500px;
+			/* Adjusted height for desktop size */
+			background-color: #fff;
+			box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.2);
+			-moz-transition: all 0.5s;
+			-o-transition: all 0.5s;
+			-webkit-transition: all 0.5s;
+			transition: all 0.5s;
+		}
+
+		.container .container-form:before {
+			content: "✔";
+			position: absolute;
+			left: 180px;
+			/* Adjusted left for desktop size */
+			top: -50px;
+			color: #5356ad;
+			font-size: 130px;
+			opacity: 0;
+			-moz-transition: all 0.5s;
+			-o-transition: all 0.5s;
+			-webkit-transition: all 0.5s;
+			transition: all 0.5s;
+		}
+
+		.container .container-form .btn {
+			position: relative;
+			box-shadow: 0 0 10px 1px #ff73b3;
+			margin-top: 30px;
+		}
+
+		.container .form-item {
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			opacity: 1;
+			-moz-transition: all 0.5s;
+			-o-transition: all 0.5s;
+			-webkit-transition: all 0.5s;
+			transition: all 0.5s;
+
+		}
+
+		.container .form-item.sign-up {
+			position: absolute;
+			left: -100%;
+			opacity: 0;
+		}
+
+		.container.log-in .box:before {
+			position: absolute;
+			left: 240px;
+			/* Adjusted left for desktop size */
+			top: 62px;
+			height: 365px;
+			/* Adjusted height for desktop size */
+		}
+
+		.container.log-in .box:after {
+			top: 22px;
+			left: 260px;
+			/* Adjusted left for desktop size */
+			width: 424px;
+			/* Adjusted width for desktop size */
+			height: 320px;
+			/* Adjusted height for desktop size */
+		}
+
+		.container.log-in .container-form {
+			left: 350px;
+			/* Adjusted left for desktop size */
+		}
+
+		.container.log-in .container-form .form-item.sign-up {
+			left: 0;
+			opacity: 1;
+		}
+
+		.container.log-in .container-form .form-item.log-in {
+			left: -100%;
+			opacity: 0;
+		}
+
+		.container.active {
+			width: 260px;
+			height: 140px;
+			margin-top: -70px;
+		}
+
+		.container.active .container-form {
+			left: 30px;
+			width: 200px;
+			height: 200px;
+		}
+
+
+
+		.container.active .form-item {
+			height: 100%;
+		}
+
+		.container.active .container-forms .container-info .info-item {
+			height: 0%;
+			opacity: 0;
+		}
+
+		.container .container-form {
+			border-radius: 10px;
+		}
+
+		.container .btn {
+			cursor: pointer;
+			text-align: center;
+			margin: 0 auto;
+			width: 100px;
+			color: #fff;
+			background-color: #e649a5;
+			border: 1px solid #e649a5;
+			opacity: 1;
+			-moz-transition: all 0.5s;
+			-o-transition: all 0.5s;
+			-webkit-transition: all 0.5s;
+			transition: all 0.5s;
+		}
+
+		.container .btn:hover {
+			opacity: 0.7;
+			background-color: #ff73b3;
+			border-color: #ff73b3;
+		}
+	</style>
+	<script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
+	<script>
+		$(document).ready(function () {
+			$(".container-form .btn").click(function () {
+				$(".container").addClass("active");
+			});
+		});
+	</script>
+</head>
+
+<body>
+	<div class="container">
+		<div class="box"></div>
+		<div class="container-forms">
+			<div class="container-info">
+				<div class="info-item" style="float: right;">
+					<!--<div class="table">
+						<div class="table-cell">
+							<p style="font-size:50px">Welcome to AMS</p>
+						</div>
+					</div>-->
+				</div>
+			</div>
+			<div class="container-form">
+				<div class="form-item log-in">
+					<div class="table">
+						<div class="table-cell">
+							<form th:action="@{/login}" method="post">
+								<div class="form-group">
+									<div class="style" style="text-align: center;">
+										<label for="username">Username</label>
+									</div>
+									<input type="text" class="form-control" id="username" name="username"
+										th:value="${param.username}" required>
+								</div>
+								<div class="form-group">
+									<div class="style" style="text-align: center;">
+										<label for="password">Password</label>
+									</div>
+									<input type="password" class="form-control" id="password" name="password" required>
+								</div>
+								<div th:if="${param.error}" class="alert alert-danger" role="alert">
+									Invalid username or password.
+								</div>
+								<button type="submit" class="btn btn-success btn-block">Login</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

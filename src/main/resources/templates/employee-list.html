@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Employees</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+    
+    <style>
+        /* Your existing styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #343a40;
+            margin-top: 45px;
+        }
+
+        .header {
+            width: 80%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .header .add-employee {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .header .add-employee:hover {
+            background-color: #218838;
+        }
+
+        .header .logout-button {
+            padding: 10px 20px;
+            background-color: #dc3545;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .header .logout-button:hover {
+            background-color: #c82333;
+        }
+
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #dddddd;
+        }
+
+        th,
+        td {
+            padding: 12px 15px;
+            text-align: left;
+            border: 1px solid #dddddd;
+        }
+
+        thead {
+            background-color: #343a40;
+            color: #ffffff;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tbody tr:hover {
+            background-color: #ddd;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .toggle-btn,
+        .view-btn {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .toggle-btn:hover,
+        .view-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .view-all-btn {
+            padding: 11px 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 20px 0 0 20px;
+        }
+
+        .view-all-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .download-button {
+            padding: 11px 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 20px 0 0 20px;
+        }
+
+        .download-button:hover {
+            background-color: #0056b3;
+        }
+        #employeeTable {
+            width: 100% !important;
+        }
+
+        .dataTables_wrapper {
+            width: 80%;
+        }
+        
+    </style>
+    <script>
+        function toggleTime(button) {
+            const employeeId = button.getAttribute('data-employee-id');
+            const action = button.textContent === "In Time" ? "in" : "out";
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", `/employees/toggle-time`, true);
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    if (action === "in") {
+                        button.textContent = "Out Time";
+                        button.style.backgroundColor = "#dc3545";
+                    } else {
+                        button.textContent = "In Time";
+                        button.style.backgroundColor = "#007bff";
+                    }
+                }
+            };
+            xhr.send(JSON.stringify({ employeeId: employeeId, action: action }));
+        }
+
+        function viewDetails(button) {
+            const employeeId = button.getAttribute('data-employee-id');
+            window.location.href = `/employees/${employeeId}/details`;
+        }
+
+        function viewAllDetails() {
+            window.location.href = `/employees/getAllEmployeesAttendance`;
+        }
+
+        function downloadExcel() {
+            window.location.href = '/employees/download';
+        }
+    </script>
+</head>
+<body>
+    <h1>Employee List</h1>
+    <div class="header">
+        <div style="position: absolute; left: 350px; top: 100px;">
+            <a th:href="@{/employees/add}" class="add-employee">Add Employee</a>
+        </div>
+
+        <div style="position: absolute; right: 190px; top: 100px;">
+            <a th:href="@{/logout}" class="logout-button">Logout</a>
+        </div>
+    </div>
+    <div style="position: absolute; left: 170px; top: 70px;">
+        <button class="view-all-btn" onclick="viewAllDetails()">View All Details</button>
+    </div>
+   
+
+    <table id="employeeTable" >
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Designation</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="employee : ${employees}">
+                <td th:text="${employee.employeeId}"></td>
+                <td th:text="${employee.employeeName}"></td>
+                <td th:text="${employee.emailId}"></td>
+                <td th:text="${employee.designation}"></td>
+                <td>
+                     <button class="toggle-btn" th:attr="data-employee-id=${employee.employeeId}"
+                        th:text="${employee.toggleState == 'out' ? 'Out Time' : 'In Time'}"
+                        th:style="${employee.toggleState == 'out' ? 'background-color: #dc3545;' : 'background-color: #007bff;'}"
+                        onclick="toggleTime(this)">${employee.toggleState ? 'Out Time' : 'In Time'}</button>
+                    <button class="view-btn" th:attr="data-employee-id=${employee.employeeId}"
+                        onclick="viewDetails(this)">View</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#employeeTable').DataTable({
+               
+            });
+        });
+    </script>
+</body>
+</html>

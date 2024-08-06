@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Employee Details</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+    <style>
+        /* Similar styling as the main page for consistency */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #343a40;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #dddddd;
+        }
+
+        th,
+        td {
+            padding: 12px 15px;
+            text-align: left;
+            border: 1px solid #dddddd;
+        }
+
+        thead {
+            background-color: #343a40;
+            color: #ffffff;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tbody tr:hover {
+            background-color: #ddd;
+        }
+
+        form {
+            margin: 20px 0;
+        }
+
+        label {
+            margin-right: 10px;
+        }
+
+        input[type="date"] {
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 5px 10px;
+            background-color: #343a40;
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #495057;
+        }
+
+        #employeeTable {
+            width: 100% !important;
+        }
+
+        .dataTables_wrapper {
+            width: 80%;
+        }
+        .download-button {
+			padding: 11px 20px;
+			background-color: #007bff;
+			color: #ffffff;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			margin-top: 20px;
+			/* Added margin to separate button from table */
+			float: left;
+		}
+
+		.download-button:hover {
+			background-color: #0056b3;
+		}
+    </style>
+    <script>
+        function downloadDetailsExcel() {
+            const employeeId = document.getElementById("employeeId").value;
+            if (employeeId) {
+                window.location.href = '/employees/details/download/' + employeeId;
+            } else {
+                console.error("Employee ID is not available.");
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Employee Details</h1>
+    <!--<div style="width: 80%; display: flex;">
+        <a href="/employees/getAllEmployee" class="back-button">
+            <img src="/image/back.png" alt="Back" class="back-icon">
+        </a>
+        <img src="/image/excel.png" alt="Download" class="image" onclick="downloadDetailsExcel()"
+            style="cursor: pointer;">
+    </div><br>-->
+    
+    <form action="/employees/getEmployeesDetailscustomize" method="get">
+        <input type="hidden" id="employeeId" name="employeeId" th:value="${employeeId}">
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate" name="startDate" required>
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate" name="endDate" required>
+        <button type="submit">Get Details</button>
+    </form>
+    
+    <div style="width: 80%; display: flex; justify-content: flex-end;">
+		<div>
+			<button class="download-button" onclick="downloadDetailsExcel()">Download Excel</button>
+		</div>
+				
+	</div><br>
+    <table id="employeeTable">
+        <thead>
+            <tr>
+                <th>Employee Name</th>
+                <th>Date</th>
+                <th>Total Working Time</th>
+                <th>Outing Count</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Loop through employee details and populate the table rows -->
+            <th:block th:each="detail : ${employeeDetails}">
+                <tr>
+                    <td th:text="${detail.employeeName}"></td>
+                    <td th:text="${detail.date}"></td>
+                    <td th:text="${detail.totalTime}"></td>
+                    <td th:text="${detail.outCount}"></td>
+                </tr>
+            </th:block>
+        </tbody>
+    </table>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#employeeTable').DataTable({});
+        });
+    </script>
+</body>
+
+</html>
